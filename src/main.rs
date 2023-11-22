@@ -46,6 +46,21 @@ fn main() {
             constant_pool.push((CpTag::Class, vals));
             println!("{}", clazz[cursor]);
             println!("Constant Pool = {:?}", constant_pool);
+        } else if clazz[cursor] == CpTag::NameAndType as u8 {
+            let tag = clazz[cursor];
+            cursor += 1;
+            let name_index = clazz[cursor] + clazz[cursor + 1] - 1;
+            cursor += 2;
+            let descriptor_index = clazz[cursor] + clazz[cursor + 1] - 1;
+            cursor += 2;
+            let mut vals: HashMap<&str, u8> = HashMap::new();
+            vals.insert("tag", tag);
+            vals.insert("name_index", name_index);
+            vals.insert("descriptor_index", descriptor_index);
+            constants_found += 1;
+            constant_pool.push((CpTag::NameAndType, vals));
+            println!("{}", clazz[cursor]);
+            println!("Constant Pool = {:?}", constant_pool);
         }
     }
 }
